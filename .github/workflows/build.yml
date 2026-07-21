@@ -77,11 +77,20 @@ jobs:
         chmod +x build_kernel.sh
         ./build_kernel.sh
 
+    - name: Create boot image
+      run: |
+        cd "tools"
+        unzip boot.zip
+        ./magiskboot unpack boot.img
+        cp ../out/target/product/a17/obj/KERNEL_OBJ/kernel-5.10/arch/arm64/boot/Image kernel
+        ./magiskboot repack boot.img
+        mv new-boot.img boot.img
+
     - name: Upload Dist Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: "Scamsung A17"
+        name: "Scamsung A17 Boot"
         path: |
-          ./out/target/product/a17/obj/KERNEL_OBJ/*
+          ./tools/boot.img
         if-no-files-found: ignore
         retention-days: 3
