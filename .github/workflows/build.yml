@@ -86,11 +86,17 @@ jobs:
         ./magiskboot repack boot.img
         mv new-boot.img boot.img
 
+    - name: Create boot image tar
+      run: |
+        cd "tools"
+        tar -cvf "boot.tar" boot.img
+
     - name: Upload Dist Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: "Scamsung A17 Boot"
+        name: "Scamsung A17 Boot Image and Tar archive"
         path: |
           ./tools/boot.img
+          ./tools/boot.tar
         if-no-files-found: ignore
         retention-days: 3
